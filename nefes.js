@@ -1,16 +1,20 @@
-// ALT:
-// HAVA.tick++;
-// HAVA.nefes = 12 + Math.sin(HAVA.tick*0.1)*4;
-// ...
+// nefes.js — iki1uc
+// kalan O₂ = (nefes × 0.2093) − (nefes × 0.037)
+// Titanic batmaz. Çünkü 86 > 18.
 
-// NEU:
-setInterval(() => {
-  const atemzug = HAVA.atmest();
-  console.log('[hava] nefes:', {
-    nefes: HAVA.nefes.toFixed(0),
-    herz:  HAVA.herz.toFixed(0),
-    dreck: HAVA.dreck.toFixed(1),
-    o2:    atemzug.kalan,
-    titanic: atemzug.titanic
-  });
-}, 2000);
+export function nefes(hacim = 500) {
+  const giren = hacim * 0.2093;
+  const cikan = hacim * 0.037;
+  const kalan = giren - cikan;
+  return {
+    hacim,
+    giren:  +giren.toFixed(2),
+    cikan:  +cikan.toFixed(2),
+    kalan:  +kalan.toFixed(2),
+    titanic: kalan > cikan ? "YÜZER" : "BATAR",
+    fazla:  +(kalan - cikan).toFixed(2),
+    kernel: 128,
+    hayat: 42,
+    kumar: 21
+  };
+}
