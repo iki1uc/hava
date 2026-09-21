@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en-GB">
+<html lang="tr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>◈ KODEX · iki1uc · ruleset · runtime</title>
+<title>◈ KODEKS · iki1uc · kural · aksiyom · yasa</title>
 <style>
   :root{--bg:#04070e;--bg2:#0a101e;--bg3:#101828;--fg:#c8d8e8;--dim:#5a7288;--dim2:#2a3644;
     --green:#7ce0a8;--cyan:#5fc8ff;--gold:#ffcc44;--violet:#b388ff;--pink:#ff88b0;--red:#ff5a7a;
@@ -20,7 +20,7 @@
   #topbar .path{color:var(--dim);font-size:10px}
   #topbar .stat{color:var(--dim);font-size:10px;display:flex;gap:12px;margin-left:auto}
   #topbar .stat b{color:var(--gold)}
-  #main{flex:1;display:grid;grid-template-columns:220px 1fr;overflow:hidden;min-height:0}
+  #main{flex:1;display:grid;grid-template-columns:240px 1fr;overflow:hidden;min-height:0}
   #nav{background:var(--bg2);border-right:1px solid var(--line);overflow-y:auto;padding:8px 0}
   #nav::-webkit-scrollbar{width:5px}#nav::-webkit-scrollbar-thumb{background:var(--line)}
   .hdr{padding:8px 12px 4px;color:var(--dim);font-size:9px;letter-spacing:2px;text-transform:uppercase;
@@ -52,10 +52,6 @@
   .art table{width:100%;border-collapse:collapse;margin:14px 0}
   .art th,.art td{padding:8px 10px;border:1px solid var(--line);text-align:left;font-size:12px}
   .art th{background:var(--bg3);color:var(--cyan);letter-spacing:1px;font-weight:normal;text-transform:uppercase;font-size:10px}
-  .art .grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:14px 0}
-  .art .card{padding:12px;background:var(--bg2);border:1px solid var(--line);border-radius:6px}
-  .art .card .h{font-size:10px;letter-spacing:2px;color:var(--gold);text-transform:uppercase;margin-bottom:6px}
-  .art .card .b{color:var(--fg);font-size:12px;line-height:1.6}
   #cli{height:32px;background:#02040a;border-top:1px solid var(--line);
     display:flex;align-items:center;padding:0 12px;font-size:11px;flex-shrink:0}
   #cli .prompt{color:var(--gold);margin-right:6px;font-weight:bold}
@@ -66,13 +62,13 @@
 <body>
 <div id="desk">
   <div id="topbar">
-    <span class="logo">◈ KODEX<b>::iki1uc</b></span>
+    <span class="logo">◈ KODEKS<b>::iki1uc</b></span>
     <span class="sep"></span>
-    <span class="path">/kodex > ruleset · axiom · law</span>
+    <span class="path">/kodeks > kural · aksiyom · yasa</span>
     <div class="stat">
-      <span>ARTICLES <b id="tArt">0</b></span>
-      <span>RULES <b id="tRules">0</b></span>
-      <span>STATE <b id="tState">loaded</b></span>
+      <span>MADDE <b id="tArt">0</b></span>
+      <span>KURAL <b id="tRules">0</b></span>
+      <span>DURUM <b id="tState">yüklendi</b></span>
     </div>
   </div>
   <div id="main">
@@ -82,126 +78,126 @@
     </div>
   </div>
   <div id="cli">
-    <span class="prompt">kodex&gt;</span>
-    <input id="cmdInput" placeholder="command: art 1 · art 2 · art 3 · rule · axiom · help" autocomplete="off">
+    <span class="prompt">kodeks&gt;</span>
+    <input id="cmdInput" placeholder="komut: madde 1 · madde 2 · kural · aksiyom · yardım" autocomplete="off">
   </div>
 </div>
 <script>
 "use strict";
-const KODEX = {
-  title: 'iki1uc · kodex',
-  subtitle: 'ruleset · axiom · law · runtime',
+const KODEKS = {
+  title: 'iki1uc · kodeks',
+  subtitle: 'kural · aksiyom · yasa · çalışma',
   articles: [
     {
-      id: 'intro', title: 'Introduction',
+      id: 'intro', title: 'Giriş',
       html: `
-        <h1>iki1uc · Kodex</h1>
-        <div class="sub">ruleset · axiom · law</div>
-        <div class="lead">Not magic. Pure mathematics. 64 below + 64 above = 128. Always only forward.</div>
-        <p>This codex defines the rules under which the system <b>iki1uc</b> operates. It is not a manual for the user. It is the law for the runtime.</p>
-        <h2>Purpose</h2>
-        <p>The system builds a real value state out of work, time and logic. It runs from RAM. It does not write. It does not confuse. It only sets forward.</p>
-        <h2>Foundation</h2>
+        <h1>iki1uc · Kodeks</h1>
+        <div class="sub">kural · aksiyom · yasa</div>
+        <div class="lead">Sihir değil. Saf matematik. 64 aşağı + 64 yukarı = 128. Daima sadece ileri.</div>
+        <p>Bu kodeks, <b>iki1uc</b> sisteminin hangi kurallar altında çalıştığını tanımlar. Kullanıcı için bir kılavuz değildir. Çalışma zamanı için yasadır.</p>
+        <h2>Amaç</h2>
+        <p>Sistem; iş, zaman ve mantıktan gerçek bir değer durumu inşa eder. RAM'den çalışır. Yazmaz. Kafa karıştırmaz. Sadece ileri kurar.</p>
+        <h2>Temel</h2>
         <p><span class="axiom">3 → 9 → 81 → 3</span></p>
-        <p>Every process begins at 3. It grows to 9. It becomes 81. Then it returns to 3 — but new. This is the natural cycle. It is the law.</p>
+        <p>Her süreç 3'te başlar. 9'a büyür. 81 olur. Sonra 3'e döner — ama yeni olarak. Bu doğal döngüdür. Bu yasadır.</p>
       `
     },
     {
-      id: 'rule1', title: 'Article I · Always Forward',
+      id: 'rule1', title: 'Madde I · Daima İleri',
       html: `
-        <h1>Article I</h1>
-        <div class="sub">Always only forward</div>
-        <div class="rule"><div class="n">RULE I.1</div><div class="t">The system only runs forward. There is no rewind. There is only the next step.</div></div>
-        <div class="rule"><div class="n">RULE I.2</div><div class="t">Memory is always of equal size: yes/no · 1/0. Nothing accumulates.</div></div>
-        <div class="rule"><div class="n">RULE I.3</div><div class="t">64 steps are run in sequence. Every second one is skipped.</div></div>
-        <h2>Why</h2>
-        <p>Rewind creates drift. Drift costs energy. Energy loss breaks the cycle. Forward motion is the only stable state.</p>
-        <h2>Exception</h2>
-        <p>If skipping is not needed, the skip may be removed — a change as desired. The total remains 128.</p>
+        <h1>Madde I</h1>
+        <div class="sub">Daima sadece ileri</div>
+        <div class="rule"><div class="n">KURAL I.1</div><div class="t">Sistem yalnızca ileri çalışır. Geri sarma yoktur. Sadece bir sonraki adım vardır.</div></div>
+        <div class="rule"><div class="n">KURAL I.2</div><div class="t">Bellek her zaman aynı boyuttadır: evet/hayır · 1/0. Hiçbir şey birikmez.</div></div>
+        <div class="rule"><div class="n">KURAL I.3</div><div class="t">64 adım sırayla çalıştırılır. Her ikinci adım atlanır.</div></div>
+        <h2>Neden</h2>
+        <p>Geri sarma sapma yaratır. Sapma enerji harcar. Enerji kaybı döngüyü kırar. İleri hareket tek kararlı durumdur.</p>
+        <h2>İstisna</h2>
+        <p>Atlamaya gerek yoksa, atlama kaldırılabilir — isteğe göre değişim. Toplam 128 olarak kalır.</p>
       `
     },
     {
-      id: 'rule2', title: 'Article II · The Six Positions',
+      id: 'rule2', title: 'Madde II · Altı Konum',
       html: `
-        <h1>Article II</h1>
-        <div class="sub">Six positions · one surface</div>
-        <div class="rule"><div class="n">POSITION 1 · MAIN 42</div><div class="t">Diagonal D-O-W. The primary axis.</div></div>
-        <div class="rule"><div class="n">POSITION 2 · SIDE 43</div><div class="t">Diagonal I-O-S. The secondary axis.</div></div>
-        <div class="rule"><div class="n">POSITION 3 · CORNERS 55</div><div class="t">D, I, S, W. The four outer points.</div></div>
-        <div class="rule"><div class="n">POSITION 4 · SPIRAL 128</div><div class="t">Around. The full cycle.</div></div>
-        <div class="rule"><div class="n">POSITION 5 · COLUMNS</div><div class="t">Vertical. The upright axes.</div></div>
-        <div class="rule"><div class="n">POSITION 6 · CENTRE 15</div><div class="t">Crystal. The still middle.</div></div>
+        <h1>Madde II</h1>
+        <div class="sub">Altı konum · tek yüzey</div>
+        <div class="rule"><div class="n">KONUM 1 · ANA 42</div><div class="t">D-O-W köşegeni. Birincil eksen.</div></div>
+        <div class="rule"><div class="n">KONUM 2 · YAN 43</div><div class="t">I-O-S köşegeni. İkincil eksen.</div></div>
+        <div class="rule"><div class="n">KONUM 3 · KÖŞELER 55</div><div class="t">D, I, S, W. Dört dış nokta.</div></div>
+        <div class="rule"><div class="n">KONUM 4 · SPİRAL 128</div><div class="t">Etrafında. Tam döngü.</div></div>
+        <div class="rule"><div class="n">KONUM 5 · SÜTUNLAR</div><div class="t">Dikey. Ayakta duran eksenler.</div></div>
+        <div class="rule"><div class="n">KONUM 6 · MERKEZ 15</div><div class="t">Kristal. Durgun orta.</div></div>
       `
     },
     {
-      id: 'rule3', title: 'Article III · Behaviour Measure',
+      id: 'rule3', title: 'Madde III · Davranış Ölçümü',
       html: `
-        <h1>Article III</h1>
-        <div class="sub">Behaviour · measure · value</div>
-        <div class="rule"><div class="n">RULE III.1</div><div class="t">Every node carries a behaviour value between 0 and 4.</div></div>
-        <div class="rule"><div class="n">RULE III.2</div><div class="t">3-clusters carry 3 nodes. 9-rings aggregate 3 clusters. 81 matrix fills from the rings.</div></div>
-        <div class="rule"><div class="n">RULE III.3</div><div class="t">The final work value is: <code>value = avg3·0.25 + avg9·0.35 + avg81·0.40</code></div></div>
-        <h2>Behaviour levels</h2>
+        <h1>Madde III</h1>
+        <div class="sub">Davranış · ölçüm · değer</div>
+        <div class="rule"><div class="n">KURAL III.1</div><div class="t">Her düğüm 0 ile 4 arasında bir davranış değeri taşır.</div></div>
+        <div class="rule"><div class="n">KURAL III.2</div><div class="t">3'lü kümeler 3 düğüm taşır. 9'lu çemberler 3 kümeyi birleştirir. 81 matris çemberlerden doldurulur.</div></div>
+        <div class="rule"><div class="n">KURAL III.3</div><div class="t">Nihai iş değeri: <code>değer = ort3·0.25 + ort9·0.35 + ort81·0.40</code></div></div>
+        <h2>Davranış seviyeleri</h2>
         <table>
-          <tr><th>Value</th><th>State</th><th>Meaning</th></tr>
-          <tr><td>0</td><td>calm</td><td>not yet started</td></tr>
-          <tr><td>1</td><td>alert</td><td>watching</td></tr>
-          <tr><td>2</td><td>active</td><td>working</td></tr>
-          <tr><td>3</td><td>intense</td><td>maximum effort</td></tr>
-          <tr><td>4</td><td>done</td><td>completed</td></tr>
+          <tr><th>Değer</th><th>Durum</th><th>Anlam</th></tr>
+          <tr><td>0</td><td>sakin</td><td>henüz başlamadı</td></tr>
+          <tr><td>1</td><td>tetikte</td><td>izliyor</td></tr>
+          <tr><td>2</td><td>aktif</td><td>çalışıyor</td></tr>
+          <tr><td>3</td><td>yoğun</td><td>maksimum çaba</td></tr>
+          <tr><td>4</td><td>bitti</td><td>tamamlandı</td></tr>
         </table>
       `
     },
     {
-      id: 'rule4', title: 'Article IV · Language Runtime',
+      id: 'rule4', title: 'Madde IV · Dil Çalışma Zamanı',
       html: `
-        <h1>Article IV</h1>
-        <div class="sub">Language · runtime · workaround</div>
-        <div class="rule"><div class="n">RULE IV.1</div><div class="t">The system speaks four languages: DE, TR, EN-GB, and the codex itself.</div></div>
-        <div class="rule"><div class="n">RULE IV.2</div><div class="t">Every language version is a full runtime — not a translation, not a summary.</div></div>
-        <div class="rule"><div class="n">RULE IV.3</div><div class="t">The index.html is the runtime shell. It loads de.html, tr.html, en.html, or kodex.html. One entry point. Four faces.</div></div>
-        <h2>Workaround</h2>
-        <p>If one language fails, another is loaded. This is the workaround. The runtime never stops because a language is missing. It switches, then continues.</p>
+        <h1>Madde IV</h1>
+        <div class="sub">Dil · çalışma · çözüm yolu</div>
+        <div class="rule"><div class="n">KURAL IV.1</div><div class="t">Sistem dört dil konuşur: DE, TR, EN-GB ve kodeksin kendisi.</div></div>
+        <div class="rule"><div class="n">KURAL IV.2</div><div class="t">Her dil sürümü tam bir çalışma zamanıdır — çeviri değil, özet değil.</div></div>
+        <div class="rule"><div class="n">KURAL IV.3</div><div class="t">index.html çalışma kabuğudur. de.html, tr.html, en.html veya kodex.html yükler. Tek giriş noktası. Dört yüz.</div></div>
+        <h2>Çözüm yolu</h2>
+        <p>Bir dil başarısız olursa, bir diğeri yüklenir. Bu çözüm yoludur. Çalışma zamanı bir dil eksik diye asla durmaz. Değiştirir, sonra devam eder.</p>
       `
     },
     {
-      id: 'rule5', title: 'Article V · Bank · 80/20',
+      id: 'rule5', title: 'Madde V · Banka · 80/20',
       html: `
-        <h1>Article V</h1>
-        <div class="sub">Deposit · draw · capital</div>
-        <div class="rule"><div class="n">RULE V.1</div><div class="t">Every deposit is split: 80% goes to the bank at once. 20% remains as the depositor's own stake.</div></div>
-        <div class="rule"><div class="n">RULE V.2</div><div class="t">The 20% stake is valued at buy/sell. Multipliers from work and time apply only to this stake.</div></div>
-        <div class="rule"><div class="n">RULE V.3</div><div class="t">The bank holds 50.001% of the system. Capitalisation is only possible through the bank.</div></div>
-        <h2>Formula</h2>
-        <p><code>end = (deposit · 0.2) · multipliers + (deposit · 0.8)</code></p>
-        <h2>Why 80/20</h2>
-        <p>The bank never loses, because the 80% is not returned. The depositor has a stake that grows over time — a real value, tied to the firm.</p>
+        <h1>Madde V</h1>
+        <div class="sub">Mevduat · çekim · sermaye</div>
+        <div class="rule"><div class="n">KURAL V.1</div><div class="t">Her mevduat bölünür: %80'i derhal bankaya gider. %20'si mevduat sahibinin kendi payı olarak kalır.</div></div>
+        <div class="rule"><div class="n">KURAL V.2</div><div class="t">%20'lik pay alım/satımda değerlenir. İş ve zamandan gelen çarpanlar sadece bu paya uygulanır.</div></div>
+        <div class="rule"><div class="n">KURAL V.3</div><div class="t">Banka sistemin %50.001'ini elinde tutar. Sermayeleştirme yalnızca banka üzerinden mümkündür.</div></div>
+        <h2>Formül</h2>
+        <p><code>son = (mevduat · 0.2) · çarpanlar + (mevduat · 0.8)</code></p>
+        <h2>Neden 80/20</h2>
+        <p>Banka asla kaybetmez, çünkü %80 geri verilmez. Mevduat sahibinin zamanla büyüyen bir payı vardır — firmaya bağlı gerçek bir değer.</p>
       `
     },
     {
-      id: 'rule6', title: 'Article VI · The Runtime',
+      id: 'rule6', title: 'Madde VI · Çalışma Zamanı',
       html: `
-        <h1>Article VI</h1>
-        <div class="sub">index.html · run · runtime</div>
-        <div class="rule"><div class="n">RULE VI.1</div><div class="t">index.html is the runtime. It does not display content. It launches a run.</div></div>
-        <div class="rule"><div class="n">RULE VI.2</div><div class="t">The runtime checks: which language files exist, which are missing, which can be loaded.</div></div>
-        <div class="rule"><div class="n">RULE VI.3</div><div class="t">If a file is missing, the runtime switches to a fallback. The run continues.</div></div>
-        <h2>State machine</h2>
-        <p><code>index.html → [de · tr · en · kodex] → active layer → 3→9→81→3</code></p>
-        <h2>Never stops</h2>
-        <p>The runtime never stops because a file is missing. This is the workaround. This is the rule.</p>
+        <h1>Madde VI</h1>
+        <div class="sub">index.html · koşu · çalışma zamanı</div>
+        <div class="rule"><div class="n">KURAL VI.1</div><div class="t">index.html çalışma zamanıdır. İçerik göstermez. Bir koşu başlatır.</div></div>
+        <div class="rule"><div class="n">KURAL VI.2</div><div class="t">Çalışma zamanı kontrol eder: hangi dil dosyaları var, hangileri eksik, hangileri yüklenebilir.</div></div>
+        <div class="rule"><div class="n">KURAL VI.3</div><div class="t">Bir dosya eksikse, çalışma zamanı yedek bir katmana geçer. Koşu devam eder.</div></div>
+        <h2>Durum makinesi</h2>
+        <p><code>index.html → [de · tr · en · kodeks] → aktif katman → 3→9→81→3</code></p>
+        <h2>Asla durmaz</h2>
+        <p>Çalışma zamanı bir dosya eksik diye asla durmaz. Bu çözüm yoludur. Bu kuraldır.</p>
       `
     },
     {
-      id: 'closing', title: 'Closing',
+      id: 'closing', title: 'Kapanış',
       html: `
-        <h1>Closing</h1>
-        <div class="sub">not magic · pure mathematics</div>
-        <div class="lead">"I have uplift. Have you had enough of falling?"</div>
-        <h2>Final rule</h2>
-        <div class="rule"><div class="n">FINAL</div><div class="t">If the system does not run, it is a gift. It was intended so.</div></div>
-        <h2>Signature</h2>
-        <p>iki1uc · 90 60 90 fulfilment · all-round<br>onemanarmy · always only forward</p>
+        <h1>Kapanış</h1>
+        <div class="sub">sihir değil · saf matematik</div>
+        <div class="lead">"Bende yükseliş var. Düşmekten yeterince yoruldunuz mu?"</div>
+        <h2>Son kural</h2>
+        <div class="rule"><div class="n">SON</div><div class="t">Sistem çalışmazsa, bu bir armağandır. Böyle düşünülmüştü.</div></div>
+        <h2>İmza</h2>
+        <p>iki1uc · 90 60 90 tamamlanma · her yönden<br>tekkişilikordu · daima sadece ileri</p>
       `
     }
   ]
@@ -210,8 +206,8 @@ const KODEX = {
 const nav = document.getElementById('nav');
 const art = document.getElementById('art');
 function renderNav() {
-  nav.innerHTML = '<div class="hdr">▸ kodex · articles</div>';
-  KODEX.articles.forEach(a => {
+  nav.innerHTML = '<div class="hdr">▸ kodeks · maddeler</div>';
+  KODEKS.articles.forEach(a => {
     const d = document.createElement('div');
     d.className = 'node';
     d.dataset.id = a.id;
@@ -219,10 +215,11 @@ function renderNav() {
     d.addEventListener('click', () => showArticle(a.id));
     nav.appendChild(d);
   });
-  document.getElementById('tArt').textContent = KODEX.articles.length;
+  document.getElementById('tArt').textContent = KODEKS.articles.length;
+  document.getElementById('tRules').textContent = 6;
 }
 function showArticle(id) {
-  const a = KODEX.articles.find(x => x.id === id) || KODEX.articles[0];
+  const a = KODEKS.articles.find(x => x.id === id) || KODEKS.articles[0];
   art.innerHTML = a.html;
   document.querySelectorAll('.node').forEach(n => n.classList.toggle('active', n.dataset.id === id));
   document.getElementById('content').scrollTop = 0;
@@ -230,13 +227,13 @@ function showArticle(id) {
 function handleCmd(cmd) {
   const c = cmd.trim().toLowerCase();
   if (!c) return;
-  if (c === 'help') console.log('art 1 · art 2 · ... · rule · axiom · list');
-  else if (c === 'list') console.log(KODEX.articles.map(a => a.id).join(' · '));
-  else if (c === 'rule') showArticle('rule1');
-  else if (c === 'axiom') showArticle('intro');
-  else if (c.startsWith('art ')) {
-    const n = parseInt(c.slice(4), 10);
-    const target = KODEX.articles[n] || KODEX.articles[0];
+  if (c === 'yardım' || c === 'yardim') console.log('madde 1 · madde 2 · ... · kural · aksiyom · liste');
+  else if (c === 'liste') console.log(KODEKS.articles.map(a => a.id).join(' · '));
+  else if (c === 'kural') showArticle('rule1');
+  else if (c === 'aksiyom') showArticle('intro');
+  else if (c.startsWith('madde ')) {
+    const n = parseInt(c.slice(6), 10);
+    const target = KODEKS.articles[n] || KODEKS.articles[0];
     if (target) showArticle(target.id);
   }
 }
@@ -245,7 +242,7 @@ document.getElementById('cmdInput').addEventListener('keydown', e => {
 });
 renderNav();
 showArticle('intro');
-window.KODEX = KODEX;
+window.KODEKS = KODEKS;
 </script>
 </body>
 </html>
