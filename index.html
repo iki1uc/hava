@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>İdrak Merdiveni · iki1uc</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(ellipse at 50% 30%, #0a1020, #000);
+    color:#c0d0e0;font-family:'Georgia',serif;
+    min-height:100vh;padding:24px;
+  }
+  .kap{max-width:720px;margin:0 auto}
+
+  h1{
+    font-size:22px;letter-spacing:4px;color:#8cf0d0;
+    text-align:center;margin-bottom:4px;font-weight:normal;
+  }
+  .alt{
+    text-align:center;color:#f0d080;font-size:11px;
+    letter-spacing:3px;margin-bottom:26px;font-family:monospace;
+  }
+
+  /* ── Treppe ── */
+  .merdiven{
+    display:flex;flex-direction:column;gap:10px;
+    margin-bottom:24px;
+  }
+  .basamak{
+    display:flex;align-items:center;gap:12px;
+    padding:10px 16px;border-radius:8px;
+    background:#050a12;border:1px solid #1a2a3a;
+    transition:.4s;opacity:.35;
+  }
+  .basamak.aktiv{opacity:1;border-color:#f0d080;
+    box-shadow:0 0 20px rgba(240,208,128,0.15);}
+  .basamak.bitti{opacity:.8;border-color:#8cf0d0;}
+  .basamak .no{
+    font-family:monospace;font-size:12px;
+    color:#5a7a8a;min-width:30px;
+  }
+  .basamak.aktiv .no{color:#f0d080}
+  .basamak.bitti .no{color:#8cf0d0}
+  .basamak .ad{font-size:13px;color:#8cf0d0;letter-spacing:1px}
+  .basamak .aciklama{font-size:10px;color:#5a7a8a;margin-top:2px;font-family:monospace}
+
+  /* ── Frage-Box ── */
+  .soru-kutu{
+    background:#0a0512;border:2px solid #f0d080;
+    border-radius:14px;padding:24px;margin-bottom:18px;
+  }
+  .soru-kutu .stufe{
+    font-family:monospace;font-size:10px;
+    color:#8cf0d0;letter-spacing:2px;margin-bottom:8px;
+  }
+  .soru-kutu .soru{
+    font-size:16px;color:#f0d080;line-height:1.6;
+    margin-bottom:18px;
+  }
+
+  /* ── Antworten ── */
+  .cevaplar{display:flex;flex-direction:column;gap:8px}
+  .cevap{
+    background:#050a12;color:#c0d0e0;
+    border:1px solid #1a2a3a;
+    padding:12px 16px;border-radius:8px;
+    font-family:inherit;font-size:13px;
+    cursor:pointer;text-align:left;
+    transition:.3s;
+  }
+  .cevap:hover{border-color:#8cf0d0;color:#8cf0d0}
+  .cevap.dogru{border-color:#8cf0d0;color:#8cf0d0;background:#0a1a12}
+  .cevap.yanlis{border-color:#ff6b6b;color:#ff6b6b;background:#1a0505}
+
+  /* ── Erklärung ── */
+  .aciklama-kutu{
+    background:#050a12;border-left:3px solid #8cf0d0;
+    padding:16px 20px;border-radius:6px;
+    font-size:13px;line-height:1.8;color:#c0d0e0;
+    margin-top:16px;display:none;
+  }
+  .aciklama-kutu.goster{display:block}
+  .aciklama-kutu .betont{color:#f0d080;font-style:italic}
+  .aciklama-kutu .sanft{color:#8cf0d0}
+
+  /* ── Nächste-Stufe Button ── */
+  .weiter{
+    display:none;margin-top:18px;text-align:center;
+  }
+  .weiter.goster{display:block}
+  .weiter button{
+    background:#000;color:#f0d080;border:1px solid #f0d080;
+    padding:10px 28px;border-radius:24px;cursor:pointer;
+    font-family:inherit;font-size:13px;letter-spacing:2px;
+    transition:.3s;
+  }
+  .weiter button:hover{background:#f0d080;color:#000}
+
+  /* ── Finale ── */
+  .final{
+    display:none;text-align:center;padding:30px;
+    background:#0a0512;border:2px solid #f0d080;
+    border-radius:14px;
+  }
+  .final.goster{display:block}
+  .final h2{color:#f0d080;font-size:18px;letter-spacing:3px;margin-bottom:12px;font-weight:normal}
+  .final p{color:#c0d0e0;font-size:14px;line-height:2;margin-bottom:8px}
+  .final .büyük{font-size:18px;color:#8cf0d0;margin:14px 0;font-style:italic}
+</style>
+</head>
+<body>
+<div class="kap">
+
+  <h1>İDRAK MERDİVENİ</h1>
+  <div class="alt">her seviyeye · bir soru · bir cevap · bir adım</div>
+
+  <!-- ══ TREPPE ══ -->
+  <div class="merdiven" id="merdiven"></div>
+
+  <!-- ══ FRAGE-KUTU ══ -->
+  <div class="soru-kutu" id="soruKutu">
+    <div class="stufe" id="stufeAd">BASAMAK 1 · BEN</div>
+    <div class="soru" id="soruText">—</div>
+    <div class="cevaplar" id="cevaplar"></div>
+    <div class="aciklama-kutu" id="aciklama"></div>
+    <div class="weiter" id="weiter">
+      <button id="btnWeiter">→ SONRAKİ BASAMAK</button>
+    </div>
+  </div>
+
+  <!-- ══ FINALE ══ -->
+  <div class="final" id="final">
+    <h2>MERDİVENİN SONU</h2>
+    <p>Dört basamak. Dört soru. Dört cevap.</p>
+    <p class="büyük">"Sen kimsin, ben kimim, kim olmak istiyoruz?"</p>
+    <p>Şimdi biliyorsun. Çünkü kendin buldun.</p>
+    <p style="color:#8cf0d0;font-size:12px;margin-top:16px">
+      Daima sadece ileri. · 86 mL kalır. · Titanic yüzer.
+    </p>
+  </div>
+
+</div>
+
+<script>
+/* ═══════════════════════════════════════════════════════════
+   İDRAK MERDİVENİ · Erkenntnis-Treppe
+   Jeder auf seinem Niveau. Jeder geht eine Stufe höher.
+   ═══════════════════════════════════════════════════════════ */
+
+// ── Die 4 Stufen ───────────────────────────────────────────
+const STUFEN = [
+  {
+    id: 1,
+    ad: "BEN",
+    aciklama: "Was ist da?",
+    soru: "Nefes aldığında, ne içine girer?",
+    cevaplar: [
+      { text: "Sadece hava", dogru: false },
+      { text: "O₂ girer, CO₂ çıkar", dogru: true },
+      { text: "Hiçbir şey", dogru: false }
+    ],
+    erklärung:
+      "Doğru. <span class='sanft'>O₂ girer, CO₂ çıkar.</span> " +
+      "Her nefeste aynı. <span class='betont'>Bu bir hesap.</span> " +
+      "500 mL nefes alırsan: 104.65 mL O₂ girer, 18.50 mL CO₂ çıkar. " +
+      "<span class='sanft'>86.15 mL kalır.</span> Ve 86 > 18. " +
+      "Bu yüzden Titanic yüzer."
+  },
+  {
+    id: 2,
+    ad: "SEN",
+    aciklama: "Was hat das mit mir zu tun?",
+    soru: "Peki bu 86 mL senin için ne yapar?",
+    cevaplar: [
+      { text: "Hiçbir şey", dogru: false },
+      { text: "Seni yüzdürür", dogru: true },
+      { text: "Seni batırır", dogru: false }
+    ],
+    erklärung:
+      "Doğru. <span class='sanft'>Seni yüzdürür.</span> " +
+      "Her nefes bir hesap. <span class='betont'>86 > 18 → itki.</span> " +
+      "Ve bu itki her nefeste tekrarlanır. " +
+      "Sen batmazsın. <span class='sanft'>Çünkü sen su değil, hava taşıyorsun.</span>"
+  },
+  {
+    id: 3,
+    ad: "BİZ",
+    aciklama: "Was hat das mit uns zu tun?",
+    soru: "Sen ve ben — aynı şeyi yapıyor muyuz?",
+    cevaplar: [
+      { text: "Hayır, herkes farklı", dogru: false },
+      { text: "Evet, herkes aynı hesabı yapıyor", dogru: true },
+      { text: "Sadece Türkler", dogru: false }
+    ],
+    erklärung:
+      "Doğru. <span class='sanft'>Herkes aynı hesabı yapıyor.</span> " +
+      "Türk, Alman, genç, yaşlı — <span class='betont'>nefes herkes için aynı.</span> " +
+      "500 mL her yerde 500 mL. " +
+      "Bu yüzden: <span class='sanft'>hepimiz aynı gemideyiz.</span> " +
+      "Ve gemi yüzüyor."
+  },
+  {
+    id: 4,
+    ad: "HEP",
+    aciklama: "Was hat das mit allem zu tun?",
+    soru: "Ve şimdi — ne yapmak istiyorsun?",
+    cevaplar: [
+      { text: "Unutmak", dogru: false },
+      { text: "Nefes almak ve devam etmek", dogru: true },
+      { text: "Durmak", dogru: false }
+    ],
+    erklärung:
+      "Doğru. <span class='sanft'>Nefes almak ve devam etmek.</span> " +
+      "Çünkü <span class='betont'>128 daima ileri.</span> " +
+      "42 hayat. 21 kumar — halbe Lebensernte. " +
+      "<span class='sanft'>Sen yalnız değilsin. Senin nefesin devam ediyor.</span>"
+  }
+];
+
+// ── Zustand ────────────────────────────────────────────────
+let aktuell = 0;
+let beantwortet = [];
+
+// ── Treppe zeichnen ────────────────────────────────────────
+function merdivenCiz() {
+  const el = document.getElementById("merdiven");
+  el.innerHTML = "";
+  STUFEN.forEach((s, i) => {
+    const d = document.createElement("div");
+    d.className = "basamak";
+    if (i === aktuell) d.classList.add("aktiv");
+    if (i < aktuell) d.classList.add("bitti");
+    d.innerHTML = `
+      <span class="no">${s.id}</span>
+      <div>
+        <div class="ad">${s.ad}</div>
+        <div class="aciklama">${s.aciklama}</div>
+      </div>
+    `;
+    el.appendChild(d);
+  });
+}
+
+// ── Frage zeichnen ─────────────────────────────────────────
+function frageCiz() {
+  if (aktuell >= STUFEN.length) {
+    document.getElementById("soruKutu").style.display = "none";
+    document.getElementById("final").classList.add("goster");
+    return;
+  }
+
+  const s = STUFEN[aktuell];
+  document.getElementById("stufeAd").textContent = `BASAMAK ${s.id} · ${s.ad}`;
+  document.getElementById("soruText").textContent = s.soru;
+
+  const el = document.getElementById("cevaplar");
+  el.innerHTML = "";
+
+  // Antworten mischen
+  const gemischt = [...s.cevaplar].sort(() => Math.random() - 0.5);
+
+  gemischt.forEach(c => {
+    const btn = document.createElement("button");
+    btn.className = "cevap";
+    btn.textContent = c.text;
+    btn.addEventListener("click", () => {
+      // Nur einmal klickbar
+      if (beantwortet[aktuell]) return;
+      beantwortet[aktuell] = true;
+
+      // Markieren
+      document.querySelectorAll(".cevap").forEach(b => {
+        if (b.textContent === c.text) {
+          b.classList.add(c.dogru ? "dogru" : "yanlis");
+        }
+      });
+
+      // Richtige Antwort zeigen, falls falsch geklickt
+      if (!c.dogru) {
+        document.querySelectorAll(".cevap").forEach(b => {
+          if (s.cevaplar.find(x => x.text === b.textContent && x.dogru)) {
+            b.classList.add("dogru");
+          }
+        });
+      }
+
+      // Erklärung zeigen
+      const erkl = document.getElementById("aciklama");
+      erkl.innerHTML = s.erklärung;
+      erkl.classList.add("goster");
+
+      // Weiter-Button zeigen
+      document.getElementById("weiter").classList.add("goster");
+    });
+    el.appendChild(btn);
+  });
+
+  // Erklärung + Weiter verstecken
+  document.getElementById("aciklama").classList.remove("goster");
+  document.getElementById("weiter").classList.remove("goster");
+}
+
+// ── Weiter ─────────────────────────────────────────────────
+document.getElementById("btnWeiter").addEventListener("click", () => {
+  aktuell++;
+  merdivenCiz();
+  frageCiz();
+});
+
+// ── Boot ───────────────────────────────────────────────────
+merdivenCiz();
+frageCiz();
+</script>
+</body>
+</html>
