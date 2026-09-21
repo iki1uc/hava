@@ -1,0 +1,120 @@
+/* ═══════════════════════════════════════════════════════════════════════
+   HAVA · CANVAS · VISUELLES SETUP
+   Luft · Atem · Wirbel · Dreck · Überleben
+   ═══════════════════════════════════════════════════════════════════════ */
+
+const cvs = document.getElementById('canvas');
+const ctx = cvs.getContext('2d');
+let W, H, CX, CY;
+
+function resize() {
+  W = cvs.width = window.innerWidth;
+  H = cvs.height = window.innerHeight * 0.6;
+  CX = W / 2;
+  CY = H / 2;
+}
+resize();
+window.addEventListener('resize', resize);
+
+// ── Hava-Atome (Luftpartikel) ───────────────────
+const atome = [];
+for (let i = 0; i < 80; i++) {
+  atome.push({
+    x: Math.random() * W,
+    y: Math.random() * H,
+    vx: (Math.random() - 0.5) * 0.6,
+    vy: (Math.random() - 0.5) * 0.6,
+    r: 2 + Math.random() * 3,
+    typ: Math.random() > 0.7 ? 'dreck' : 'hava'
+  });
+}
+
+// ── Nefes-Wellen ────────────────────────────────
+const nefesWellen = [];
+
+function draw() {
+  // Hintergrund: Himmel (hava)
+  const grad = ctx.createLinearGradient(0, 0, 0, H);
+  grad.addColorStop(0, '#0a1220');
+  grad.addColorStop(1, '#000');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, W, H);
+
+  // Atome bewegen
+  for (const a of atome) {
+    a.x += a.vx;
+    a.y += a.vy;
+    if (a.x < 0) a.x = W;
+    if (a.x > W) a.x = 0;
+    if (a.y < 0) a.y = H;
+    if (a.y > H) a.y = 0;
+
+    // Zeichnen
+    if (a.typ === 'dreck') {
+      ctx.fillStyle = `rgba(120,80,40,0.5)`;
+    } else {
+      ctx.fillStyle = `rgba(100,200,255,0.3)`;
+    }
+    ctx.beginPath();
+    ctx.arc(a.x, a.y, a.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  // Nefes-Wellen (Atem)
+  for (let i = nefesWellen.length - 1; i >= 0; i--) {
+    const w = nefesWellen[i];
+    w.t += 0.02;
+    if (w.t >= 1) { nefesWellen.splice(i, 1); continue; }
+    const r = w.t * 200;
+    ctx.strokeStyle = `rgba(140,240,208,${(1 - w.t) * 0.5})`;
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.arc(CX, CY, r, 0, Math.PI * 2);
+    ctx.stroke();
+  }
+
+  // HAVA-Label
+  ctx.font = 'bold 24px monospace';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(140,240,208,0.8)';
+  ctx.fillText('HAVA', CX, CY - 40);
+
+  ctx.font = '12px monospace';
+  ctx.fillStyle = 'rgba(120,180,200,0.5)';
+  ctx.fillText('Luft · Atem · Wirbel · Überleben', CX, CY + 10);
+
+  // Bios-Werte
+  if (window.HAVA) {
+    const z = HAVA.zustand();
+    ctx.font = '11px monospace';
+    ctx.textAlign = 'left';
+    ctx.fillStyle = '#6cf';
+    ctx.fillText(`O2: ${z.hava.o2}%  CO2: ${z.hava.co2}%  Dreck: ${z.hava.dreck.toFixed(1)}%`, 20, 30);
+    ctx.fillText(`Nefes: ${z.bios.nefes.toFixed(0)}/min  Herz: ${z.bios.herz.toFixed(0)}/min  O2: ${z.bios.sauerstoff.toFixed(0)}%`, 20, 48);
+  }
+
+  requestAnimationFrame(draw);
+}
+
+// ── Nefes-Trigger empfangen ─────────────────────
+window.addEventListener('message', (e) => {
+  const d = e.data || {};
+  if (d.type === 'hava.nefes') {
+    nefesWellen.push({ t: 0, payload: d.payload });
+  }
+  if (d.type === 'hava.dreck') {
+    // Dreck-Atome hinzufügen
+    for (let i = 0; i < d.payload.aufgenommen; i++) {
+      atome.push({
+        x: Math.random() * W,
+        y: Math.random() * H,
+        vx: (Math.random() - 0.5) * 0.8,
+        vy: (Math.random() - 0.5) * 0.8,
+        r: 2 + Math.random() * 4,
+        typ: 'dreck'
+      });
+    }
+  }
+});
+
+draw();
