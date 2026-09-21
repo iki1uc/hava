@@ -1,0 +1,5 @@
+earg()   → liest      → sagt: „Ich lese was da ist."
+xarg()   → kreuzt     → sagt: „Ich verbinde was zusammengehört."
+3tearg() → trance     → sagt: „Ich finde den Kern."
+arg.symc → übersetzt  → sagt: „Ich mache es verständlich."
+endSync  → schließt   → sagt: „Jetzt steht es."
